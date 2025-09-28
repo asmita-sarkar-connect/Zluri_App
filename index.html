@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zluri - Employee App Catalog</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo">🔐 Zluri</div>
+                    <h1>Welcome back</h1>
+                    <p class="login-subtitle">Access your apps securely</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn--primary btn--full-width login-btn">
+                        Continue
+                    </button>
+                </form>
+                
+                <div class="sso-section">
+                    <div class="divider">
+                        <span>Or sign in with</span>
+                    </div>
+                    
+                    <div class="sso-buttons">
+                        <button class="btn btn--outline sso-btn" type="button">
+                            <span class="sso-icon">🔍</span>
+                            Login with Google
+                        </button>
+                        <button class="btn btn--outline sso-btn" type="button">
+                            <span class="sso-icon">🏢</span>
+                            Login with Microsoft
+                        </button>
+                        <a href="#" class="sso-link">Continue with Company SSO</a>
+                    </div>
+                </div>
+                
+                <div class="login-footer">
+                    <p>Having trouble? <a href="#">Contact IT</a></p>
+                </div>
+            </div>
+            
+            <div class="login-illustration">
+                <svg width="200" height="150" viewBox="0 0 200 150" class="illustration-svg">
+                    <circle cx="100" cy="75" r="40" fill="none" stroke="#60A5FA" stroke-width="2"/>
+                    <rect x="60" y="35" width="80" height="80" fill="none" stroke="#60A5FA" stroke-width="2" rx="8"/>
+                    <line x1="80" y1="55" x2="120" y2="55" stroke="#60A5FA" stroke-width="2"/>
+                    <line x1="80" y1="70" x2="120" y2="70" stroke="#60A5FA" stroke-width="2"/>
+                    <line x1="80" y1="85" x2="110" y2="85" stroke="#60A5FA" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard hidden">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-container">
+                <div class="nav-left">
+                    <div class="nav-logo">🔐 Zluri</div>
+                </div>
+                
+                <div class="nav-center">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search apps: Slack, Salesforce...">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+                
+                <div class="nav-right">
+                    <div class="profile-dropdown">
+                        <button class="profile-btn" id="profileBtn">
+                            <span class="profile-avatar">👤</span>
+                            <span class="profile-name" id="profileName">John D.</span>
+                        </button>
+                        <div class="dropdown-menu" id="profileMenu">
+                            <a href="#" class="dropdown-item">My Apps</a>
+                            <a href="#" class="dropdown-item">Requests</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" id="logoutBtn">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-container">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <h1 class="hero-title">Good afternoon, <span id="userFirstName">John</span></h1>
+                    <p class="hero-subtitle">Your apps and requests at a glance</p>
+                </section>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <!-- Apps Section -->
+                    <section class="apps-section">
+                        <div class="section-header">
+                            <h2>Your Apps</h2>
+                            <span class="app-count" id="appCount">4 apps</span>
+                        </div>
+                        
+                        <div class="apps-grid" id="appsGrid">
+                            <!-- App tiles will be dynamically inserted here -->
+                        </div>
+                    </section>
+
+                    <!-- Sidebar -->
+                    <aside class="sidebar">
+                        <!-- Pending Requests -->
+                        <section class="requests-section">
+                            <h3>Pending Requests</h3>
+                            <div class="requests-list" id="requestsList">
+                                <!-- Requests will be dynamically inserted here -->
+                            </div>
+                        </section>
+
+                        <!-- Recently Used -->
+                        <section class="recent-section">
+                            <h3>Recently Used</h3>
+                            <div class="recent-list" id="recentList">
+                                <!-- Recent apps will be dynamically inserted here -->
+                            </div>
+                        </section>
+                    </aside>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- App Detail Modal -->
+    <div id="appDetailModal" class="modal hidden">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-drawer">
+            <div class="modal-header">
+                <button class="modal-close" id="closeAppDetail">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="app-detail-grid">
+                    <div class="app-detail-left">
+                        <div class="app-logo-large" id="detailAppLogo">📱</div>
+                        <h2 id="detailAppName">App Name</h2>
+                        <p id="detailAppDescription">App description</p>
+                    </div>
+                    
+                    <div class="app-detail-middle">
+                        <div class="detail-item">
+                            <label>Owner</label>
+                            <span id="detailOwner">IT Department</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Cost</label>
+                            <span id="detailCost">$8/user/month</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Compliance</label>
+                            <span id="detailCompliance">SOC2, GDPR</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>License Type</label>
+                            <span id="detailLicenseType">Per User</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Similar Apps</label>
+                            <span class="similar-apps">Teams, Discord</span>
+                        </div>
+                    </div>
+                    
+                    <div class="app-detail-right">
+                        <div class="detail-actions">
+                            <button class="btn btn--primary" id="detailLaunchBtn">Launch App</button>
+                            <button class="btn btn--outline" id="detailRequestBtn">Request Access</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Form Modal -->
+    <div id="requestModal" class="modal hidden">
+        <div class="modal-overlay" id="requestOverlay"></div>
+        <div class="modal-content-center">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>Request App Access</h3>
+                    <button class="modal-close" id="closeRequestModal">&times;</button>
+                </div>
+                
+                <form id="requestForm">
+                    <div class="form-group">
+                        <label class="form-label">Application</label>
+                        <span id="requestAppName" class="app-name-display">App Name</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="requestReason" class="form-label">Business Justification</label>
+                        <textarea id="requestReason" class="form-control" rows="3" placeholder="Please explain why you need access to this application..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="licenseTier" class="form-label">License Tier</label>
+                        <select id="licenseTier" class="form-control">
+                            <option value="basic">Basic</option>
+                            <option value="standard">Standard</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                    </div>
+                    
+                    <div class="request-info">
+                        <div class="info-item">
+                            <span class="info-label">Approver:</span>
+                            <span id="requestApprover">IT Manager</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Estimated SLA:</span>
+                            <span>2 business days</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--outline" id="cancelRequest">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SSO Flow Modal -->
+    <div id="ssoModal" class="modal hidden">
+        <div class="modal-overlay" id="ssoOverlay"></div>
+        <div class="modal-content-center">
+            <div class="modal-card sso-modal">
+                <div class="sso-animation">
+                    <div class="spinner"></div>
+                    <h3 id="ssoTitle">Launching Slack...</h3>
+                    <p id="ssoDescription">Authenticating via SAML SSO</p>
+                    <div class="sso-steps">
+                        <div class="step active" id="step1">Building SAML assertion</div>
+                        <div class="step" id="step2">Signing with private key</div>
+                        <div class="step" id="step3">Redirecting to application</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chatbot -->
+    <div id="chatbot" class="chatbot">
+        <!-- Chat Bubble -->
+        <div id="chatBubble" class="chat-bubble">
+            <div class="bubble-icon">🤖</div>
+            <div class="bubble-notification" id="bubbleNotification">1</div>
+        </div>
+
+        <!-- Chat Window -->
+        <div id="chatWindow" class="chat-window hidden">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">🤖</div>
+                    <div class="chat-title">
+                        <h4>Zluri AI Assistant</h4>
+                        <span class="chat-status">
+                            <span class="status-dot online"></span>
+                            Online
+                        </span>
+                    </div>
+                </div>
+                <div class="chat-controls">
+                    <button class="chat-minimize" id="chatMinimize" title="Minimize chat">
+                        <span>−</span>
+                    </button>
+                    <button class="chat-close" id="chatClose" title="Close chat">
+                        <span>×</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be inserted here -->
+            </div>
+
+            <div class="chat-typing hidden" id="chatTyping">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span class="typing-text">AI Assistant is typing...</span>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="chat-quick-actions" id="chatQuickActions">
+                    <button class="quick-action-btn" data-action="search-apps">Find Apps</button>
+                    <button class="quick-action-btn" data-action="check-access">Check Access</button>
+                    <button class="quick-action-btn" data-action="help">Get Help</button>
+                </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Ask me about apps, access, or support..." maxlength="500">
+                    <button class="chat-send" id="chatSend" title="Send message">
+                        <span>➤</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Help</a>
+                <a href="#" class="footer-link">Privacy</a>
+                <a href="#" class="footer-link">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
